@@ -17,3 +17,9 @@ CREATE TABLE secrets (
   description TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO 
+secrets (title, description)
+VALUES
+    ('Secret 1', 'The first big secret, I will never tell you.'),
+    ('Secret 2', 'The second secret, I might tell.');
