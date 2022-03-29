@@ -32,7 +32,7 @@ describe('secrets routes', () => {
   });
 
   it('signs in an existing user', async () => {
-    const user = await UserService.create(mockUser);
+    await UserService.create(mockUser);
     const { email, password } = mockUser;
 
     const res = await request(app)
@@ -41,7 +41,19 @@ describe('secrets routes', () => {
 
     expect(res.body).toEqual({
       message: 'Signed in successfully!',
-      user,
+    });
+  });
+
+  it('returns 401 error & message if user does not exist', async () => {
+    const { email, password } = mockUser;
+
+    const res = await request(app)
+      .post('/api/v1/users/sessions')
+      .send({ email, password });
+
+    expect(res.body).toEqual({
+      message: 'Invalid credentials (email)',
+      status: 401,
     });
   });
 });
