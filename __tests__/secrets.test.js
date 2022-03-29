@@ -12,7 +12,16 @@ describe('secrets routes', () => {
     pool.end();
   });
 
-  it('returns a list of secrets', async () => {
-    console.log('secret tests');
+  it('creates a secret', async () => {
+    const expected = {
+      title: 'I am a secret',
+      description: 'A really secret secret.',
+    };
+    const res = await request(app).post('/api/v1/secrets').send(expected);
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      ...expected,
+      createdAt: expect.any(String),
+    });
   });
 });
