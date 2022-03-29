@@ -52,8 +52,22 @@ describe('secrets routes', () => {
       .send({ email, password });
 
     expect(res.body).toEqual({
-      message: 'Invalid credentials (email)',
+      message: 'Invalid credentials',
       status: 401,
+    });
+  });
+
+  it('signs out an existing user', async () => {
+    await UserService.create(mockUser);
+    const { email, password } = mockUser;
+
+    await request(app).post('/api/v1/users/sessions').send({ email, password });
+
+    const res = await request(app).delete('/api/v1/users/sessions');
+
+    expect(res.body).toEqual({
+      success: true,
+      message: 'Signed out successfully!',
     });
   });
 });
