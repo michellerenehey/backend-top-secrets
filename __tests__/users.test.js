@@ -32,10 +32,11 @@ describe('secrets routes', () => {
   });
 
   it('signs in an existing user', async () => {
+    const agent = request.agent(app);
     await UserService.create(mockUser);
     const { email, password } = mockUser;
 
-    const res = await request(app)
+    const res = await agent
       .post('/api/v1/users/sessions')
       .send({ email, password });
 
@@ -45,9 +46,10 @@ describe('secrets routes', () => {
   });
 
   it('returns 401 error & message if user does not exist', async () => {
+    const agent = request.agent(app);
     const { email, password } = mockUser;
 
-    const res = await request(app)
+    const res = await agent
       .post('/api/v1/users/sessions')
       .send({ email, password });
 
@@ -58,12 +60,13 @@ describe('secrets routes', () => {
   });
 
   it('signs out an existing user', async () => {
+    const agent = request.agent(app);
     await UserService.create(mockUser);
     const { email, password } = mockUser;
 
-    await request(app).post('/api/v1/users/sessions').send({ email, password });
+    await agent.post('/api/v1/users/sessions').send({ email, password });
 
-    const res = await request(app).delete('/api/v1/users/sessions');
+    const res = await agent.delete('/api/v1/users/sessions');
 
     expect(res.body).toEqual({
       success: true,
