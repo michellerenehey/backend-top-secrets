@@ -2,6 +2,14 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const UserService = require('../lib/services/UserService');
+
+const mockUser = {
+  firstName: 'Test',
+  lastName: 'Test Last Name',
+  email: 'test@test.com',
+  password: '12345',
+};
 
 describe('secrets routes', () => {
   beforeEach(() => {
@@ -12,12 +20,17 @@ describe('secrets routes', () => {
     pool.end();
   });
 
-  it('creates a secret', async () => {
+  it('can create a secret if signed in', async () => {
+    const agent = request.agent(app);
+    await UserService.create(mockUser);
+    const { email, password } = mockUser;
+
+    await agent.post('/api/v1/users/sessions').send({ email, password });
     const expected = {
       title: 'I am a secret',
       description: 'A really secret secret.',
     };
-    const res = await request(app).post('/api/v1/secrets').send(expected);
+    const res = await agent.post('/api/v1/secrets').send(expected);
     expect(res.body).toEqual({
       id: expect.any(String),
       ...expected,
