@@ -19,7 +19,7 @@ CREATE TABLE secrets (
 );
 
 INSERT INTO 
-secrets (title, description)
+  secrets (title, description)
 VALUES
     ('Secret 1', 'The first big secret, I will never tell you.'),
     ('Secret 2', 'The second secret, I might tell.');
