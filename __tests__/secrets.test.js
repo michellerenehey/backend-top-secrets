@@ -46,13 +46,11 @@ describe('secrets routes', () => {
 
     const expected = [
       {
-        id: expect.any(String),
         title: 'Secret 1',
         description: 'The first big secret, I will never tell you.',
         createdAt: expect.any(String),
       },
       {
-        id: expect.any(String),
         title: 'Secret 2',
         description: 'The second secret, I might tell.',
         createdAt: expect.any(String),
