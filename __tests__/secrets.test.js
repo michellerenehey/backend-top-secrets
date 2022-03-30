@@ -37,4 +37,23 @@ describe('secrets routes', () => {
       createdAt: expect.any(String),
     });
   });
+
+  it('gets a list of secrets if signed in', async () => {
+    const expected = [
+      {
+        id: expect.any(String),
+        title: 'Secret 1',
+        description: 'The first big secret, I will never tell you.',
+        createdAt: expect.any(String),
+      },
+      {
+        id: expect.any(String),
+        title: 'Secret 2',
+        description: 'The second secret, I might tell.',
+        createdAt: expect.any(String),
+      },
+    ];
+    const res = await request(app).get('/api/v1/secrets');
+    expect(res.body).toEqual(expected);
+  });
 });
