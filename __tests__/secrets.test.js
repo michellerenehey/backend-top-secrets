@@ -24,8 +24,8 @@ describe('secrets routes', () => {
     const agent = request.agent(app);
     await UserService.create(mockUser);
     const { email, password } = mockUser;
-
     await agent.post('/api/v1/users/sessions').send({ email, password });
+
     const expected = {
       title: 'I am a secret',
       description: 'A really secret secret.',
@@ -39,6 +39,11 @@ describe('secrets routes', () => {
   });
 
   it('gets a list of secrets if signed in', async () => {
+    const agent = request.agent(app);
+    await UserService.create(mockUser);
+    const { email, password } = mockUser;
+    await agent.post('/api/v1/users/sessions').send({ email, password });
+
     const expected = [
       {
         id: expect.any(String),
@@ -53,7 +58,7 @@ describe('secrets routes', () => {
         createdAt: expect.any(String),
       },
     ];
-    const res = await request(app).get('/api/v1/secrets');
+    const res = await agent.get('/api/v1/secrets');
     expect(res.body).toEqual(expected);
   });
 });
